@@ -36,8 +36,13 @@ defmodule UrlShortenerWeb.LinkController do
 
   def redirect(conn, %{"short_path" => short_path}) do
     case Link.find_url_by_short_path(short_path) do
-      nil -> conn |> send_resp(404, "url not found")
-      %Link{url: url} -> conn |> send_resp(200, url)
+      nil ->
+        conn |> send_resp(404, "url not found")
+
+      %Link{url: url} ->
+        conn
+        |> put_resp_header("location", url)
+        |> send_resp(301, "")
     end
   end
 end
