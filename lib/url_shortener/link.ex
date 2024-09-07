@@ -23,6 +23,14 @@ defmodule UrlShortener.Link do
     |> unique_constraint(:url)
   end
 
+  def find_url_by_short_path(short_path) do
+    from(UrlShortener.Link,
+      where: [short_path: ^short_path],
+      select: [:url]
+    )
+    |> Repo.one()
+  end
+
   def find_path_by_url(url) do
     from(UrlShortener.Link,
       where: [url: ^url],

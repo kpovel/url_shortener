@@ -26,11 +26,18 @@ defmodule UrlShortenerWeb.LinkController do
             end
           end)
 
-        conn |> send_resp(200, "#{host}/r/#{short_path}")
+        conn |> send_resp(200, "http://#{host}/api/r/#{short_path}")
     end
   end
 
   def short(conn, _params) do
     conn |> send_resp(400, "provide a url")
+  end
+
+  def redirect(conn, %{"short_path" => short_path}) do
+    case Link.find_url_by_short_path(short_path) do
+      nil -> conn |> send_resp(404, "url not found")
+      %Link{url: url} -> conn |> send_resp(200, url)
+    end
   end
 end

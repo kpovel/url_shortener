@@ -9,7 +9,7 @@ defmodule UrlShortenerWeb.Router do
     pipe_through :api
 
     post "/short-link", LinkController, :short
-    # get "/r/:code", ShortLink, :redirect
+    get "/r/:short_path", LinkController, :redirect
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
